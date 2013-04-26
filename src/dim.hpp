@@ -1,6 +1,9 @@
 #ifndef DIM_HPP
 #define DIM_HPP
 
+#include "config.hpp"
+#include "dbfile.hpp"
+
 #include <array>
 #include <memory>
 #include <mutex>
@@ -13,9 +16,6 @@
 #include <boost/interprocess/containers/string.hpp>
 #include <boost/interprocess/containers/vector.hpp>
 #include <boost/interprocess/managed_mapped_file.hpp>
-
-#include "config.hpp"
-#include "dbfile.hpp"
 
 template <typename T>
 class Dim {
