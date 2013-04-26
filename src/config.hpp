@@ -1,7 +1,10 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-constexpr unsigned int pageSize = 4096;
+#include <cstddef>
+
+constexpr std::size_t colnameLength = 64;
+constexpr std::size_t pageSize = 4096;
 
 #endif
 

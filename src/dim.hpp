@@ -38,14 +38,14 @@ class Dim {
 			return this->name;
 		}
 
-		long getSize() {
+		std::size_t getSize() {
 			return *this->size;
 		}
 
-		long add(T x) {
-			long pos = *this->size;
-			long segment = pos / SEGMENT_SIZE;
-			long offset = pos % SEGMENT_SIZE;
+		std::size_t add(T x) {
+			std::size_t pos = *this->size;
+			std::size_t segment = pos / SEGMENT_SIZE;
+			std::size_t offset = pos % SEGMENT_SIZE;
 			segment_t* segmentPtr = getSegmentPtr(segment);
 
 			// store data
@@ -55,11 +55,11 @@ class Dim {
 			return pos;
 		}
 
-		segment_t* getSegment(long segment) {
+		segment_t* getSegment(std::size_t segment) {
 			return getSegmentPtr(segment);
 		}
 
-		long getSegmentCount() {
+		std::size_t getSegmentCount() {
 			if ((*this->size) > 0) {
 				return (*this->size - 1) / SEGMENT_SIZE + 1;
 			} else {
@@ -67,7 +67,7 @@ class Dim {
 			}
 		}
 
-		long getSegmentFillSize(long segment) {
+		std::size_t getSegmentFillSize(std::size_t segment) {
 			if ((segment + 1) * SEGMENT_SIZE <= (*this->size)) {
 				// full
 				return SEGMENT_SIZE;
@@ -82,8 +82,8 @@ class Dim {
 
 		std::string name;
 		std::shared_ptr<DBFile> file;
-		long* size;
-		std::unordered_map<long, segment_t*> segments;
+		std::size_t* size;
+		std::unordered_map<std::size_t, segment_t*> segments;
 		int callbackID;
 
 		static std::string genSizeID(std::string name) {
@@ -92,20 +92,20 @@ class Dim {
 			return buffer.str();
 		}
 
-		static std::string genSegmentID(std::string name, long n) {
+		static std::string genSegmentID(std::string name, std::size_t n) {
 			std::stringstream buffer;
 			buffer << "dims/" << name << "/segments/" << n;
 			return buffer.str();
 		}
 
 		void resetPtrs() {
-			this->size = file->find_or_construct<long>(genSizeID(name), 0);
+			this->size = file->find_or_construct<std::size_t>(genSizeID(name), 0);
 
 			// reset segment pointers
 			this->segments.clear();
 		}
 
-		segment_t* getSegmentPtr(long segment) {
+		segment_t* getSegmentPtr(std::size_t segment) {
 			std::lock_guard<std::mutex> lock(this->mutexSegments);
 			segment_t* segmentPtr = nullptr;
 
