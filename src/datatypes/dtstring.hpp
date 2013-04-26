@@ -34,7 +34,7 @@ class DTString {
 
 template <std::size_t N>
 std::ostream& operator<<(std::ostream& stream, const DTString<N>& obj) {
-	return stream << static_cast<const std::string&>(obj);
+	return stream << '"' << static_cast<const std::string&>(obj) << '"';
 }
 
 #endif
