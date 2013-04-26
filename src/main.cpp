@@ -7,6 +7,8 @@
 #include <list>
 #include <memory>
 
+using namespace greycore;
+
 std::list<std::string> readLine(std::istream& stream) {
 	std::list<std::string> result;
 

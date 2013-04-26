@@ -1,10 +1,12 @@
-#ifndef CONFIG_HPP
-#define CONFIG_HPP
+#ifndef GC_CONFIG_HPP
+#define GC_CONFIG_HPP
 
 #include <cstddef>
 
-constexpr std::size_t colnameLength = 64;
-constexpr std::size_t pageSize = 4096;
+namespace greycore {
+	constexpr std::size_t colnameLength = 64;
+	constexpr std::size_t pageSize = 4096;
+}
 
 #endif
 

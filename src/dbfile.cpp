@@ -4,6 +4,8 @@
 
 namespace bip = boost::interprocess;
 
+using namespace greycore;
+
 DBFile::DBFile(std::string fname) :
 		name(fname),
 		mfile(new mfile_t(bip::open_or_create, name.c_str(), GROW_SIZE)) {
