@@ -55,12 +55,7 @@ int main() {
 		exit = true;
 	};
 	commands["listColumns"] = [&columns](cmdargs_t){
-		for (std::size_t s = 0; s < columns->getSegmentCount(); ++s) {
-			auto segment = columns->getSegment(s);
-			for (std::size_t i = 0; i < columns->getSegmentFillSize(s); ++i) {
-				std::cout << (*segment)[i] << std::endl;
-			}
-		}
+		std::cout << *columns << std::endl;
 	};
 
 	// main loop

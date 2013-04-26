@@ -34,11 +34,11 @@ class Dim {
 			file->unregisterPResetFun(callbackID);
 		}
 
-		std::string getName() {
+		std::string getName() const {
 			return this->name;
 		}
 
-		std::size_t getSize() {
+		std::size_t getSize() const {
 			return *this->size;
 		}
 
@@ -59,7 +59,11 @@ class Dim {
 			return getSegmentPtr(segment);
 		}
 
-		std::size_t getSegmentCount() {
+		const segment_t* getSegment(std::size_t segment) const {
+			return getSegmentPtr(segment);
+		}
+
+		std::size_t getSegmentCount() const {
 			if ((*this->size) > 0) {
 				return (*this->size - 1) / SEGMENT_SIZE + 1;
 			} else {
@@ -67,7 +71,7 @@ class Dim {
 			}
 		}
 
-		std::size_t getSegmentFillSize(std::size_t segment) {
+		std::size_t getSegmentFillSize(std::size_t segment) const {
 			if ((segment + 1) * SEGMENT_SIZE <= (*this->size)) {
 				// full
 				return SEGMENT_SIZE;
@@ -82,12 +86,12 @@ class Dim {
 		}
 
 	private:
-		std::mutex mutexSegments;
+		mutable std::mutex mutexSegments;
 
 		std::string name;
 		std::shared_ptr<DBFile> file;
 		std::size_t* size;
-		std::unordered_map<std::size_t, segment_t*> segments;
+		mutable std::unordered_map<std::size_t, segment_t*> segments;
 		int callbackID;
 
 		static std::string genSizeID(std::string name) {
@@ -109,7 +113,7 @@ class Dim {
 			this->segments.clear();
 		}
 
-		segment_t* getSegmentPtr(std::size_t segment) {
+		segment_t* getSegmentPtr(std::size_t segment) const {
 			std::lock_guard<std::mutex> lock(this->mutexSegments);
 			segment_t* segmentPtr = nullptr;
 
@@ -136,6 +140,23 @@ class Dim {
 			return segmentPtr;
 		}
 };
+
+template <typename T>
+std::ostream& operator<<(std::ostream& stream, const Dim<T>& obj) {
+	std::string name(obj.getName());
+	stream << name << std::endl;
+	stream << std::string(name.size(), '-') << std::endl << std::endl;
+
+	for (std::size_t s = 0; s < obj.getSegmentCount(); ++s) {
+		auto segment = obj.getSegment(s);
+
+		for (std::size_t i = 0; i < obj.getSegmentFillSize(s); ++i) {
+			stream << (*segment)[i] << std::endl;
+		}
+	}
+
+	return stream;
+}
 
 #endif
 
