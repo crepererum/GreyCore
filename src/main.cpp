@@ -1,6 +1,7 @@
 #include "config.hpp"
 #include "dbfile.hpp"
 #include "dim.hpp"
+#include "management.hpp"
 #include "datatypes/dtstring.hpp"
 
 #include <iostream>
@@ -34,7 +35,7 @@ int main() {
 
 	// state
 	bool exit = false;
-	auto columns = std::make_shared<Dim<DTString<colnameLength>>>(db, "_columns");
+	auto columns = getIndexColumns(db);
 
 	// create commands
 	typedef const std::list<std::string>& cmdargs_t;
