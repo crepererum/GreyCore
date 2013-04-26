@@ -77,6 +77,10 @@ class Dim {
 			}
 		}
 
+		static bool exists(std::shared_ptr<DBFile> file, std::string name) {
+			return file->find<std::size_t>(genSizeID(name)).second == 1;
+		}
+
 	private:
 		std::mutex mutexSegments;
 

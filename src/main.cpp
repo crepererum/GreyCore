@@ -7,24 +7,16 @@
 #include <list>
 #include <memory>
 
-std::list<std::string> splitCmd(const std::string& cmd) {
+std::list<std::string> readLine(std::istream& stream) {
 	std::list<std::string> result;
-	std::size_t pos = 0;
 
-	while (pos != std::string::npos) {
-		auto next = cmd.find(" ", pos);
-		auto itBegin = cmd.cbegin() + pos;
-		auto itEnd = cmd.cend();
-		if (next != std::string::npos) {
-			itEnd = cmd.cbegin() + next;
-		}
-
-		if (next - pos > 1) {
-			result.emplace_back(itBegin, itEnd);
-		}
-
-		pos = next;
+	while (stream.peek() != '\n') {
+		std::string s;
+		stream >> s;
+		result.push_back(s);
 	}
+
+	stream.ignore();
 
 	return result;
 }
@@ -45,6 +37,20 @@ int main() {
 	// create commands
 	typedef const std::list<std::string>& cmdargs_t;
 	std::map<std::string, std::function<void(cmdargs_t)>> commands;
+	commands["createColumn"] = [&db, &columns](cmdargs_t args) {
+		if (args.size() != 1) {
+			std::cout << "Usage: createColumn COLUMN" << std::endl;
+			return;
+		}
+		std::string colName = *args.begin();
+
+		if (Dim<int>::exists(db, colName)) {
+			std::cout << "Nope, this dimension exists!" << std::endl;
+		} else {
+			Dim<int> dim(db, colName);
+			columns->add(colName);
+		}
+	};
 	commands["exit"] = [&exit](cmdargs_t){
 		exit = true;
 	};
@@ -62,10 +68,9 @@ int main() {
 		// read new command
 		std::string cmd;
 		std::cout << ">> " << std::flush;
-		std::cin >> cmd;
+		auto cmdList = readLine(std::cin);
 
 		// parse command
-		auto cmdList = splitCmd(cmd);
 		if (cmdList.size() > 0) {
 			auto cmdName = *cmdList.begin();
 			decltype(cmdList) cmdArgs(++cmdList.cbegin(), cmdList.cend());
