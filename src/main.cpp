@@ -1,7 +1,7 @@
 #include "config.hpp"
 #include "dbfile.hpp"
 #include "dim.hpp"
-#include "management.hpp"
+#include "database.hpp"
 #include "datatypes/dtstring.hpp"
 
 #include <iostream>
@@ -30,35 +30,33 @@ int main() {
 
 	// setup
 	std::cout << "Open DB: " << std::flush;
-	auto db = std::make_shared<DBFile>("db.bin");
+	Database db("db.bin");
 	std::cout << "ok" << std::endl;
 
 	// state
 	bool exit = false;
-	auto columns = getIndexColumns(db);
 
 	// create commands
 	typedef const std::list<std::string>& cmdargs_t;
 	std::map<std::string, std::function<void(cmdargs_t)>> commands;
-	commands["createColumn"] = [&db, &columns](cmdargs_t args) {
+	commands["createColumn"] = [&db](cmdargs_t args) {
 		if (args.size() != 1) {
 			std::cout << "Usage: createColumn COLUMN" << std::endl;
 			return;
 		}
 		std::string colName = *args.begin();
 
-		if (Dim<int>::exists(db, colName)) {
+		if (db.dimExists(colName)) {
 			std::cout << "Nope, this dimension exists!" << std::endl;
 		} else {
-			Dim<int> dim(db, colName);
-			columns->add(colName);
+			db.createDim<int>(colName);
 		}
 	};
 	commands["exit"] = [&exit](cmdargs_t){
 		exit = true;
 	};
-	commands["listColumns"] = [&columns](cmdargs_t){
-		std::cout << *columns << std::endl;
+	commands["listColumns"] = [&db](cmdargs_t){
+		std::cout << *db.getIndexDims() << std::endl;
 	};
 
 	// main loop
