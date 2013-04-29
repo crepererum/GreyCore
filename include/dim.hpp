@@ -31,6 +31,9 @@ namespace greycore {
 					name(name),
 					file(file),
 					callbackID(file->registerPResetFun(std::bind(&Dim::resetPtrs, this))) {
+				if (!checkType()) {
+					throw new std::runtime_error("Illegal type!");
+				}
 				resetPtrs();
 			}
 
@@ -40,6 +43,10 @@ namespace greycore {
 
 			std::string getName() const {
 				return this->name;
+			}
+
+			std::string getType() const {
+				return typeid(T).name();
 			}
 
 			std::size_t getSize() const {
@@ -104,10 +111,28 @@ namespace greycore {
 				return buffer.str();
 			}
 
+			static std::string genTypehashID(std::string name) {
+				std::stringstream buffer;
+				buffer << "dims/" << name << "/typehash";
+				return buffer.str();
+			}
+
 			static std::string genSegmentID(std::string name, std::size_t n) {
 				std::stringstream buffer;
 				buffer << "dims/" << name << "/segments/" << n;
 				return buffer.str();
+			}
+
+			bool checkType() {
+				std::string	thId = genTypehashID(this->name);
+				std::size_t hash = typeid(T).hash_code();
+				auto lookup = file->find<std::size_t>(thId);
+				if (lookup.second == 1) {
+					return (*lookup.first) == hash;
+				} else {
+					file->find_or_construct<std::size_t>(thId, hash);
+					return true;
+				}
 			}
 
 			void resetPtrs() {
