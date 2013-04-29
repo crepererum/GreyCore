@@ -4,6 +4,7 @@
 #include "config.hpp"
 #include "dbfile.hpp"
 #include "dim.hpp"
+#include "datatypes/dttuple.hpp"
 #include "datatypes/dtstring.hpp"
 
 #include <memory>
@@ -13,7 +14,8 @@
 namespace greycore {
 	class Database {
 		public:
-			typedef Dim<DTString<colnameLength>> indexDims_t;
+			typedef DTTuple<DTString<colnameLength>, DTString<typenameLength>> indexDimsPayload_t;
+			typedef Dim<indexDimsPayload_t> indexDims_t;
 
 			Database(std::string fname);
 
@@ -28,8 +30,9 @@ namespace greycore {
 				}
 
 				if (!dimExists(name)) {
-					indexDims->add(name);
-					return std::make_shared<Dim<T>>(db, name);
+					auto tmp = std::make_shared<Dim<T>>(db, name);
+					indexDims->add(indexDimsPayload_t(tmp->getName(), tmp->getTypename()));
+					return tmp;
 				} else {
 					throw new std::runtime_error("Dimension already exists!");
 				}

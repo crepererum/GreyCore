@@ -18,6 +18,8 @@
 #include <boost/interprocess/containers/vector.hpp>
 #include <boost/interprocess/managed_mapped_file.hpp>
 
+#include <cxxabi.h>
+
 namespace greycore {
 	template <typename T>
 	class Dim {
@@ -45,8 +47,14 @@ namespace greycore {
 				return this->name;
 			}
 
-			std::string getType() const {
-				return typeid(T).name();
+			std::string getTypename() const {
+				int status;
+				char* result = abi::__cxa_demangle(typeid(T).name(), nullptr, nullptr, &status);
+				if (status == 0) {
+					return result;
+				} else {
+					return typeid(T).name();
+				}
 			}
 
 			std::size_t getSize() const {
@@ -172,9 +180,9 @@ namespace greycore {
 
 	template <typename T>
 	std::ostream& operator<<(std::ostream& stream, const Dim<T>& obj) {
-		std::string name(obj.getName());
+		std::string name(obj.getName() + " (" + obj.getTypename() + ")");
 		stream << name << std::endl;
-		stream << std::string(name.size(), '-') << std::endl << std::endl;
+		stream << std::string(name.size(), '-') << std::endl;
 
 		for (std::size_t s = 0; s < obj.getSegmentCount(); ++s) {
 			auto segment = obj.getSegment(s);
