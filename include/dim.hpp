@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <string>
+#include <type_traits>
 #include <unordered_map>
 
 #include <boost/interprocess/containers/map.hpp>
@@ -20,6 +21,8 @@
 namespace greycore {
 	template <typename T>
 	class Dim {
+		static_assert(std::is_pod<T>::value, "Dim<A> can only hold POD");
+
 		public:
 			static constexpr unsigned int SEGMENT_SIZE = 64 * (pageSize - sizeof(std::array<T,0>)) / sizeof(T); // 64 pages (opt 256 pages)
 			typedef std::array<T, SEGMENT_SIZE> segment_t;

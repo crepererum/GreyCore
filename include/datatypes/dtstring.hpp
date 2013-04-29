@@ -9,8 +9,6 @@ namespace greycore {
 	template <std::size_t N>
 	class DTString {
 		public:
-			DTString() : size(0) {}
-
 			DTString(const std::string& s) :
 					size(s.size()) {
 				std::copy(s.cbegin(), s.cend(), data.begin());
@@ -18,14 +16,14 @@ namespace greycore {
 
 			DTString(const char* s) : DTString(std::string(s)) {}
 
-			operator std::string() const {
-				return std::string(data.cbegin(), data.cbegin() + size);
-			}
+			DTString() = default;
+			DTString(const DTString&) = default;
+			DTString(DTString&&) = default;
+			DTString& operator=(const DTString&) = default;
+			DTString& operator=(DTString&&) = default;
 
-			DTString& operator=(const DTString& obj) {
-				size = obj.size;
-				std::copy(obj.data.cbegin(), obj.data.cbegin() + size, data.begin());
-				return *this;
+			operator std::string() const {
+				return std::string(data.cbegin(), data.cbegin() + std::min(size, N));
 			}
 
 		private:
