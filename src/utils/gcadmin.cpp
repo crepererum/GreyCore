@@ -24,13 +24,20 @@ std::list<std::string> readLine(std::istream& stream) {
 	return result;
 }
 
-int main() {
+int main(int argc, char** argv) {
 	// print hello message
 	std::cout << "GreyCore" << std::endl;
 
+	// check args
+	if (argc != 2) {
+		std::cout << "Usage: gcadmin DBFILE" << std::endl;
+		return EXIT_SUCCESS;
+	}
+	std::string argFile(argv[1]);
+
 	// setup
 	std::cout << "Open DB: " << std::flush;
-	Database db("db.bin");
+	Database db(argFile);
 	std::cout << "ok" << std::endl;
 
 	// state
