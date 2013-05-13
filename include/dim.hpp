@@ -74,6 +74,20 @@ namespace greycore {
 				return pos;
 			}
 
+			T& operator[](std::size_t pos) {
+				std::size_t segment = pos / SEGMENT_SIZE;
+				std::size_t offset = pos % SEGMENT_SIZE;
+
+				return (*getSegmentPtr(segment))[offset];
+			}
+
+			const T& operator[](std::size_t pos) const {
+				std::size_t segment = pos / SEGMENT_SIZE;
+				std::size_t offset = pos % SEGMENT_SIZE;
+
+				return (*getSegmentPtr(segment))[offset];
+			}
+
 			segment_t* getSegment(std::size_t segment) {
 				return getSegmentPtr(segment);
 			}
