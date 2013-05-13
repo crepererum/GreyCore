@@ -26,7 +26,7 @@ namespace greycore {
 			template <typename T>
 			std::shared_ptr<Dim<T>> createDim(std::string name) {
 				if ((name.size() < 1) || (name[0] == '_')) {
-					throw new std::runtime_error("Illegal name!");
+					throw std::runtime_error("Illegal name!");
 				}
 
 				if (!dimExists(name)) {
@@ -34,7 +34,7 @@ namespace greycore {
 					indexDims->add(indexDimsPayload_t(tmp->getName(), tmp->getTypename()));
 					return tmp;
 				} else {
-					throw new std::runtime_error("Dimension already exists!");
+					throw std::runtime_error("Dimension already exists!");
 				}
 			}
 
@@ -43,7 +43,7 @@ namespace greycore {
 				if (dimExists(name)) {
 					return std::make_shared<Dim<T>>(db, name);
 				} else {
-					throw new std::runtime_error("Dimension does not exist!");
+					throw std::runtime_error("Dimension does not exist!");
 				}
 			}
 
