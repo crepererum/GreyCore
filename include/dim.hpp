@@ -3,6 +3,7 @@
 
 #include "config.hpp"
 #include "dbfile.hpp"
+#include "typedescriptor.hpp"
 
 #include <array>
 #include <memory>
@@ -17,8 +18,6 @@
 #include <boost/interprocess/containers/string.hpp>
 #include <boost/interprocess/containers/vector.hpp>
 #include <boost/interprocess/managed_mapped_file.hpp>
-
-#include <cxxabi.h>
 
 namespace greycore {
 	template <typename T>
@@ -48,13 +47,7 @@ namespace greycore {
 			}
 
 			std::string getTypename() const {
-				int status;
-				char* result = abi::__cxa_demangle(typeid(T).name(), nullptr, nullptr, &status);
-				if (status == 0) {
-					return result;
-				} else {
-					return typeid(T).name();
-				}
+				return getTypedescriptor<T>();
 			}
 
 			std::size_t getSize() const {
