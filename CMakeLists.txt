@@ -12,16 +12,19 @@ endif ()
 
 include_directories ("include/")
 
-# build libgreycore
+# build/install libgreycore
 aux_source_directory (src/libgreycore GCSourcesLib)
 add_library (greycore ${GCSourcesLib})
 target_link_libraries (greycore pthread)
+install (DIRECTORY "include/" DESTINATION "include/greycore")
+install (TARGETS greycore DESTINATION "lib")
 
-# build utils
+# build/install utils
 aux_source_directory (src/utils GCSourcesUtils)
 foreach (fname ${GCSourcesUtils})
 	get_filename_component (exe ${fname} NAME_WE)
 	add_executable (${exe} ${fname})
 	target_link_libraries (${exe} greycore)
+	install (TARGETS ${exe} DESTINATION "bin")
 endforeach ()
 
