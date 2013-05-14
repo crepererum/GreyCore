@@ -1,8 +1,8 @@
 #ifndef GC_FLATMAP_HPP
 #define GC_FLATMAP_HPP
 
-#include "dim.hpp"
-#include "datatypes/dttuple.hpp"
+#include "../dim.hpp"
+#include "../datatypes/dttuple.hpp"
 
 #include <memory>
 #include <unordered_map>
