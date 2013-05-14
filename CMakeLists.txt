@@ -24,7 +24,7 @@ if (HAVE_CXXABI_H)
 endif ()
 
 # build/install libgreycore
-aux_source_directory (src/libgreycore GCSourcesLib)
+file (GLOB_RECURSE GCSourcesLib "src/libgreycore/*.cpp")
 add_library (greycore ${GCSourcesLib})
 target_link_libraries (greycore pthread)
 install (DIRECTORY "include/" DESTINATION "include/greycore")
