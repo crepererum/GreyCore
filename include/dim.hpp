@@ -62,9 +62,31 @@ namespace greycore {
 
 				// store data
 				(*segmentPtr)[offset] = x;
-				(*this->size)++;
+				++(*this->size);
 
 				return pos;
+			}
+
+			template <class InputIterator>
+			std::size_t add(InputIterator first, InputIterator last) {
+				std::size_t segment = (*this->size) / SEGMENT_SIZE;
+				std::size_t offset = (*this->size) % SEGMENT_SIZE;
+				segment_t* segmentPtr = getSegmentPtr(segment);
+
+				for (; first != last; ++first) {
+					if (offset == SEGMENT_SIZE) {
+						++segment;
+						offset = 0;
+						segmentPtr = getSegmentPtr(segment);
+					}
+
+					(*segmentPtr)[offset] = (*first);
+
+					++(*this->size);
+					++offset;
+				}
+
+				return (*this->size) - 1;
 			}
 
 			T& operator[](std::size_t pos) {
