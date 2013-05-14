@@ -23,6 +23,10 @@ namespace greycore {
 				return std::tuple_cat(std::tuple<Head>(head), static_cast<std::tuple<Tail...>>(tail));
 			}
 
+			std::tuple<Head, Tail...> toTuple() const {
+				return static_cast<std::tuple<Head, Tail...>>(*this);
+			}
+
 		private:
 			Head head;
 			DTTuple<Tail...> tail;
