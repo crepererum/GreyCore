@@ -26,6 +26,7 @@ namespace greycore {
 
 		public:
 			static constexpr unsigned int SEGMENT_SIZE = 64 * (pageSize - sizeof(std::array<T,0>)) / sizeof(T); // 64 pages (opt 256 pages)
+			typedef T payload_t;
 			typedef std::array<T, SEGMENT_SIZE> segment_t;
 
 			Dim(std::shared_ptr<DBFile> file, std::string name) :
