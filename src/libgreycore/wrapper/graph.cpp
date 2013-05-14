@@ -1,4 +1,4 @@
-#include "wrapper/graph.hpp"
+#include "greycore/wrapper/graph.hpp"
 
 #include <cassert>
 #include <sstream>

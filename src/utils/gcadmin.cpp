@@ -1,8 +1,8 @@
-#include "config.hpp"
-#include "dbfile.hpp"
-#include "dim.hpp"
-#include "database.hpp"
-#include "datatypes/dtstring.hpp"
+#include "greycore/config.hpp"
+#include "greycore/dbfile.hpp"
+#include "greycore/dim.hpp"
+#include "greycore/database.hpp"
+#include "greycore/datatypes/dtstring.hpp"
 
 #include <iostream>
 #include <list>

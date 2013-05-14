@@ -1,4 +1,4 @@
-#include "database.hpp"
+#include "greycore/database.hpp"
 
 namespace greycore {
 	Database::Database(std::string fname) :

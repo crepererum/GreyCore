@@ -27,7 +27,7 @@ endif ()
 file (GLOB_RECURSE GCSourcesLib "src/libgreycore/*.cpp")
 add_library (greycore ${GCSourcesLib})
 target_link_libraries (greycore pthread)
-install (DIRECTORY "include/" DESTINATION "include/greycore")
+install (DIRECTORY "include/" DESTINATION "include")
 install (TARGETS greycore DESTINATION "lib")
 
 # build/install utils
