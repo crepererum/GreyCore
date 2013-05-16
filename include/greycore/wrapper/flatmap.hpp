@@ -14,7 +14,7 @@ namespace greycore {
 			typedef DTTuple<K, V> payload_t;
 			typedef Dim<payload_t> dim_t;
 
-			Flatmap(const std::shared_ptr<dim_t>& dim_) :
+			explicit Flatmap(const std::shared_ptr<dim_t>& dim_) :
 					dim(dim_) {
 				for (std::size_t s = 0; s < dim->getSegmentCount(); ++s) {
 					typename dim_t::segment_t* segment = dim->getSegment(s);

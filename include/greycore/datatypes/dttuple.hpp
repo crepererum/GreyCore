@@ -9,9 +9,8 @@ namespace greycore {
 	template <typename Head, typename... Tail>
 	class DTTuple {
 		public:
-			DTTuple(Head h, Tail... t) : head(h), tail(t...) {}
-			//DTTuple(const Head& h, const Tail&... t) : head(h), tail(t...) {}
-			//DTTuple(Head&& h, Tail&&... t) : head(std::forward(h)), tail(std::forward(t)...) {}
+			DTTuple(const Head& h, const Tail&... t) : head(h), tail(t...) {}
+			DTTuple(Head&& h, Tail&&... t) : head(std::move(h)), tail(std::move(t)...) {}
 
 			DTTuple() = default;
 			DTTuple(const DTTuple&) = default;
@@ -35,9 +34,8 @@ namespace greycore {
 	template <typename Head>
 	class DTTuple<Head> {
 		public:
-			DTTuple(Head h) : head(h) {}
-			//DTTuple(const Head& h) : head(h) {}
-			//DTTuple(Head&& h ) : head(std::forward(h)) {}
+			DTTuple(const Head& h) : head(h) {}
+			DTTuple(Head&& h ) : head(std::move(h)) {}
 
 			DTTuple() = default;
 			DTTuple(const DTTuple&) = default;

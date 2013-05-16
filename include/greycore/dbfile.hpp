@@ -16,20 +16,20 @@ namespace greycore {
 
 			static constexpr int GROW_SIZE = 64 * 1024 * 1024; // 64 MB
 
-			explicit DBFile(std::string fname);
+			explicit DBFile(const std::string& fname);
 
-			int registerPResetFun(pResetFun_t fun);
+			int registerPResetFun(const pResetFun_t& fun);
 			void unregisterPResetFun(int id);
 
 			void grow();
 
 			template <typename T>
-			std::pair<T*, std::size_t> find(std::string id) const {
+			std::pair<T*, std::size_t> find(const std::string& id) const {
 				return this->mfile->find<T>(id.c_str());
 			}
 
 			template <typename T, typename... A>
-			T* construct(std::string id, A&&... args) {
+			T* construct(const std::string& id, A&&... args) {
 				T* ptr = nullptr;
 
 				do {
@@ -43,7 +43,7 @@ namespace greycore {
 			}
 
 			template <typename T, typename... A>
-			T* find_or_construct(std::string id, A&&... args) {
+			T* find_or_construct(const std::string& id, A&&... args) {
 				T* ptr = nullptr;
 
 				do {

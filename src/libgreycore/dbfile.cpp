@@ -5,13 +5,13 @@
 namespace bip = boost::interprocess;
 
 namespace greycore {
-	DBFile::DBFile(std::string fname) :
+	DBFile::DBFile(const std::string& fname) :
 			name(fname),
 			mfile(new mfile_t(bip::open_or_create, name.c_str(), GROW_SIZE)) {
 		assert(mfile->check_sanity());
 	}
 
-	int DBFile::registerPResetFun(pResetFun_t fun) {
+	int DBFile::registerPResetFun(const pResetFun_t& fun) {
 		int id = this->idCounter++;
 		this->resetFuns[id] = fun;
 		return id;

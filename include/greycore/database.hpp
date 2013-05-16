@@ -17,14 +17,14 @@ namespace greycore {
 			typedef DTTuple<DTString<colnameLength>, DTString<typenameLength>> indexDimsPayload_t;
 			typedef Dim<indexDimsPayload_t> indexDims_t;
 
-			Database(std::string fname);
+			Database(const std::string& fname);
 
 			std::shared_ptr<const indexDims_t> getIndexDims() const;
 
-			bool dimExists(std::string name) const;
+			bool dimExists(const std::string& name) const;
 
 			template <typename T>
-			std::shared_ptr<Dim<T>> createDim(std::string name) {
+			std::shared_ptr<Dim<T>> createDim(const std::string& name) {
 				if ((name.size() < 1) || (name[0] == '_')) {
 					throw std::runtime_error("Illegal name!");
 				}
@@ -39,7 +39,7 @@ namespace greycore {
 			}
 
 			template <typename T>
-			std::shared_ptr<Dim<T>> getDim(std::string name) {
+			std::shared_ptr<Dim<T>> getDim(const std::string& name) {
 				if (dimExists(name)) {
 					return std::make_shared<Dim<T>>(db, name);
 				} else {

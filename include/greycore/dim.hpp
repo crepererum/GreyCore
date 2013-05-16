@@ -31,7 +31,7 @@ namespace greycore {
 			typedef T payload_t;
 			typedef std::array<T, SEGMENT_SIZE> segment_t;
 
-			Dim(std::shared_ptr<DBFile> file, std::string name) :
+			Dim(const std::shared_ptr<DBFile>& file, const std::string& name) :
 					name(name),
 					file(file),
 					callbackID(file->registerPResetFun(std::bind(&Dim::resetPtrs, this))) {
@@ -57,7 +57,7 @@ namespace greycore {
 				return *this->size;
 			}
 
-			std::size_t add(T x) {
+			std::size_t add(const T& x) {
 				std::size_t pos = *this->size;
 				std::size_t segment = pos / SEGMENT_SIZE;
 				std::size_t offset = pos % SEGMENT_SIZE;
@@ -145,19 +145,19 @@ namespace greycore {
 			mutable std::unordered_map<std::size_t, segment_t*> segments;
 			int callbackID;
 
-			static std::string genSizeID(std::string name) {
+			static std::string genSizeID(const std::string& name) {
 				std::stringstream buffer;
 				buffer << "dims/" << name << "/size";
 				return buffer.str();
 			}
 
-			static std::string genTypehashID(std::string name) {
+			static std::string genTypehashID(const std::string& name) {
 				std::stringstream buffer;
 				buffer << "dims/" << name << "/typehash";
 				return buffer.str();
 			}
 
-			static std::string genSegmentID(std::string name, std::size_t n) {
+			static std::string genSegmentID(const std::string& name, std::size_t n) {
 				std::stringstream buffer;
 				buffer << "dims/" << name << "/segments/" << n;
 				return buffer.str();
