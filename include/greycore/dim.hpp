@@ -20,12 +20,14 @@
 #include <boost/interprocess/managed_mapped_file.hpp>
 
 namespace greycore {
-	template <typename T>
+	template <
+		typename T,
+		std::size_t SEGMENT_SIZE = 64 * (pageSize - sizeof(std::array<T,0>)) / sizeof(T) // 64 pages
+	>
 	class Dim {
 		static_assert(std::is_pod<T>::value, "Dim<A> can only hold POD");
 
 		public:
-			static constexpr unsigned int SEGMENT_SIZE = 64 * (pageSize - sizeof(std::array<T,0>)) / sizeof(T); // 64 pages (opt 256 pages)
 			typedef T payload_t;
 			typedef std::array<T, SEGMENT_SIZE> segment_t;
 
