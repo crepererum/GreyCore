@@ -26,11 +26,11 @@ namespace greycore {
 	>
 	class Dim {
 		static_assert(std::is_pod<T>::value, "Dim<A> can only hold POD");
-		static constexpr std::size_t segmentSize = SEGMENT_SIZE;
 
 		public:
 			typedef T payload_t;
 			typedef std::array<T, SEGMENT_SIZE> segment_t;
+			static constexpr std::size_t segmentSize = SEGMENT_SIZE;
 
 			Dim(const std::shared_ptr<DBFile>& file, const std::string& name) :
 					name(name),
