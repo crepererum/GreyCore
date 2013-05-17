@@ -8,11 +8,14 @@
 #include <unordered_map>
 
 namespace greycore {
-	template <typename K, typename V>
+	template <
+		typename K,
+		typename V,
+		std::size_t SEGMENT_SIZE = Dim<DTTuple<K, V>>::segmentSize>
 	class Flatmap {
 		public:
 			typedef DTTuple<K, V> payload_t;
-			typedef Dim<payload_t> dim_t;
+			typedef Dim<payload_t, SEGMENT_SIZE> dim_t;
 
 			explicit Flatmap(const std::shared_ptr<dim_t>& dim_) :
 					dim(dim_) {

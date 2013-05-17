@@ -26,6 +26,7 @@ namespace greycore {
 	>
 	class Dim {
 		static_assert(std::is_pod<T>::value, "Dim<A> can only hold POD");
+		static constexpr std::size_t segmentSize = SEGMENT_SIZE;
 
 		public:
 			typedef T payload_t;
