@@ -23,14 +23,14 @@ namespace greycore {
 
 			bool dimExists(const std::string& name) const;
 
-			template <typename T>
-			std::shared_ptr<Dim<T>> createDim(const std::string& name) {
+			template <typename T, std::size_t SEGMENT_SIZE = Dim<T>::segmentSize>
+			std::shared_ptr<Dim<T, SEGMENT_SIZE>> createDim(const std::string& name) {
 				if ((name.size() < 1) || (name[0] == '_')) {
 					throw std::runtime_error("Illegal name!");
 				}
 
 				if (!dimExists(name)) {
-					auto tmp = std::make_shared<Dim<T>>(db, name);
+					auto tmp = std::make_shared<Dim<T, SEGMENT_SIZE>>(db, name);
 					indexDims->add(indexDimsPayload_t(tmp->getName(), tmp->getTypename()));
 					return tmp;
 				} else {
@@ -38,10 +38,10 @@ namespace greycore {
 				}
 			}
 
-			template <typename T>
-			std::shared_ptr<Dim<T>> getDim(const std::string& name) {
+			template <typename T, std::size_t SEGMENT_SIZE = Dim<T>::segmentSize>
+			std::shared_ptr<Dim<T, SEGMENT_SIZE>> getDim(const std::string& name) {
 				if (dimExists(name)) {
-					return std::make_shared<Dim<T>>(db, name);
+					return std::make_shared<Dim<T, SEGMENT_SIZE>>(db, name);
 				} else {
 					throw std::runtime_error("Dimension does not exist!");
 				}
