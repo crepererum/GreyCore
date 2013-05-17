@@ -50,7 +50,7 @@ namespace greycore {
 			}
 
 			std::string getTypename() const {
-				return getTypedescriptor<T>();
+				return Typedescriptor<T>::get();
 			}
 
 			std::size_t getSize() const {

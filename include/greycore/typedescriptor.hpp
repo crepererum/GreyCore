@@ -9,16 +9,18 @@
 
 namespace greycore {
 	template <typename T>
-	std::string getTypedescriptor() {
+	struct Typedescriptor {
+		static std::string get() {
 #ifdef HAVE_CXXABI_H
-		int status;
-		char* result = abi::__cxa_demangle(typeid(T).name(), nullptr, nullptr, &status);
-		if (status == 0) {
-			return result;
-		}
+			int status;
+			char* result = abi::__cxa_demangle(typeid(T).name(), nullptr, nullptr, &status);
+			if (status == 0) {
+				return result;
+			}
 #endif
-		return typeid(T).name();
-	}
+			return typeid(T).name();
+		}
+	};
 }
 
 #endif
