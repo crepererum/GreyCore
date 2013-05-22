@@ -37,7 +37,7 @@ namespace greycore {
 					file(file),
 					callbackID(file->registerPResetFun(std::bind(&Dim::resetPtrs, this))) {
 				if (!checkType()) {
-					throw new std::runtime_error("Illegal type!");
+					throw std::runtime_error("Illegal type!");
 				}
 				resetPtrs();
 			}
