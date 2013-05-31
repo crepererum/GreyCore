@@ -51,7 +51,9 @@ namespace greycore {
 			}
 
 			std::string getTypename() const {
-				return Typedescriptor<T>::get();
+				std::stringstream ss;
+				ss << Typedescriptor<T>::get() << " [" << SEGMENT_SIZE << "]";
+				return ss.str();
 			}
 
 			std::size_t getSize() const {
@@ -165,8 +167,8 @@ namespace greycore {
 			}
 
 			bool checkType() {
-				std::string	thId = genTypehashID(this->name);
-				std::size_t hash = typeid(T).hash_code();
+				std::string thId = genTypehashID(this->name);
+				std::size_t hash = typeid(T).hash_code() ^ SEGMENT_SIZE;
 				auto lookup = file->find<std::size_t>(thId);
 				if (lookup.second == 1) {
 					return (*lookup.first) == hash;
@@ -211,8 +213,8 @@ namespace greycore {
 			}
 	};
 
-	template <typename T>
-	std::ostream& operator<<(std::ostream& stream, const Dim<T>& obj) {
+	template <typename T, std::size_t SEGMENT_SIZE>
+	std::ostream& operator<<(std::ostream& stream, const Dim<T, SEGMENT_SIZE>& obj) {
 		std::string name(obj.getName() + " (" + obj.getTypename() + ")");
 		stream << name << std::endl;
 		stream << std::string(name.size(), '-') << std::endl;
